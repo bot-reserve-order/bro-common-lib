@@ -1,4 +1,4 @@
-package domains
+package bro_domains
 
 import (
 	"database/sql/driver"
@@ -22,15 +22,15 @@ type BaseInfo struct {
 }
 
 func (a BaseInfo) Value() (driver.Value, error) {
-    return json.Marshal(a)
+	return json.Marshal(a)
 }
 
 func (a *BaseInfo) Scan(value interface{}) error {
-    b, ok := value.([]byte)
-    if !ok {
-        return errors.New("type assertion to []byte failed")
-    }
-    return json.Unmarshal(b,&a)
+	b, ok := value.([]byte)
+	if !ok {
+		return errors.New("type assertion to []byte failed")
+	}
+	return json.Unmarshal(b, &a)
 }
 
 type SiteInfo struct {

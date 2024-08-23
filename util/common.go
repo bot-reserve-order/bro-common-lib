@@ -5,8 +5,8 @@ import (
 	"runtime"
 )
 
-func Caller() string {
-	_, file, no, ok := runtime.Caller(1)
+func Caller(skip int) string {
+	_, file, no, ok := runtime.Caller(skip)
 	if ok {
 		return fmt.Sprintf("%s#%d\n", file, no)
 	}

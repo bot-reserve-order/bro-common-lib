@@ -1,4 +1,4 @@
-package domains
+package bro_domains
 
 import (
 	"time"
