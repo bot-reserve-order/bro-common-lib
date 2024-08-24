@@ -21,5 +21,6 @@ require (
 
 require (
 	github.com/go-playground/validator/v10 v10.22.0
+	github.com/sigurn/crc16 v0.0.0-20240131213347-83fcde1e29d1
 	go.uber.org/multierr v1.10.0 // indirect
 )

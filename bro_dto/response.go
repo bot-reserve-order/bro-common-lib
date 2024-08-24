@@ -87,3 +87,8 @@ type ResponseRoomNotify struct {
 	CommonResponse
 	Data []bro_domains.RoomNotify `json:"data"`
 }
+
+type ResponseQrDeposit struct {
+	CommonResponse
+	Data string `json:"data"`
+}

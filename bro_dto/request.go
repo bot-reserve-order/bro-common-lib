@@ -72,7 +72,7 @@ type UpdateLineToken struct {
 }
 
 type BoostCondition struct {
-	Boost decimal.Decimal `json:"boost"`
+	Boost decimal.Decimal `json:"boost" validate:"required"`
 }
 
 type TrueWalletCallback struct {
