@@ -15,7 +15,7 @@ type CommonResponse struct {
 }
 
 type CommonErrorResponse struct {
-	OriginalError error  `json:"original_error,omitempty"`
+	OriginalError string  `json:"original_error,omitempty"`
 	Location      string `json:"location,omitempty"`
 }
 

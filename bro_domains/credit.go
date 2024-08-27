@@ -10,11 +10,11 @@ import (
 
 type Credit struct {
 	ID          uint            `gorm:"primaryKey" json:"id"`
-	UserID      uuid.UUID       `gorm:"type:uuid;index" json:"user_id" grom:"column:user_id"`
-	Amount      decimal.Decimal `json:"amount" grom:"column:amount"`
-	Note        string          `json:"note" grom:"column:note"`
-	Status      bro_enum.Status `json:"status" grom:"column:status"`
-	ExternalRef string          `json:"external_ref" grom:"column:external_ref;index"`
+	UserID      uuid.UUID       `gorm:"type:uuid;index" json:"user_id" gorm:"column:user_id"`
+	Amount      decimal.Decimal `json:"amount" gorm:"column:amount"`
+	Note        string          `json:"note" gorm:"column:note"`
+	Status      bro_enum.Status `json:"status" gorm:"column:status"`
+	ExternalRef string          `json:"external_ref" gorm:"column:external_ref;index"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }

@@ -36,8 +36,8 @@ type Login struct {
 
 type RootLoginRegister struct {
 	Login
-	Reference string `json:"reference" validate:"required"`
-	LineToken string `json:"line_token" validate:"required"`
+	Reference string `json:"reference"`
+	LineToken string `json:"line_token"`
 }
 
 type FounderRegister struct {

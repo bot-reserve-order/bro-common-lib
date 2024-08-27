@@ -19,7 +19,7 @@ func newError(ctx context.Context, code int, msg string, origin error) *bro_dto.
 	}
 	if origin != nil {
 		err.CommonErrorResponse = &bro_dto.CommonErrorResponse{
-			OriginalError: origin,
+			OriginalError: origin.Error(),
 			Location:      util.Caller(3),
 		}
 	}
@@ -93,6 +93,10 @@ func NewBroErrorUpdateFleetToken(ctx context.Context) *bro_dto.BroErrorResponse 
 
 func NewBroErrorUpdateUser(ctx context.Context) *bro_dto.BroErrorResponse {
 	return newError(ctx, 1012, "Update user error", nil)
+}
+
+func NewBroErrorRequireLineToken(ctx context.Context) *bro_dto.BroErrorResponse {
+	return newError(ctx, 1013, "Require Line notify token", nil)
 }
 
 // 2000
