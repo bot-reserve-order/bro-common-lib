@@ -27,6 +27,7 @@ type Conditions struct {
 	Credits         pq.Int64Array             `json:"credits" gorm:"column:credits;type:integer[]"`
 	Boost           decimal.Decimal           `json:"boost"`
 	PackageID       bro_enum.Package          `json:"package_id"`
+	Note            string                    `json:"note"`
 
 	CreatedAt time.Time
 	UpdatedAt time.Time
