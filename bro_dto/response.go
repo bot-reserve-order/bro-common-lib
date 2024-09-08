@@ -15,7 +15,7 @@ type CommonResponse struct {
 }
 
 type CommonErrorResponse struct {
-	OriginalError string  `json:"original_error,omitempty"`
+	OriginalError string `json:"original_error,omitempty"`
 	Location      string `json:"location,omitempty"`
 }
 
@@ -91,4 +91,31 @@ type ResponseRoomNotify struct {
 type ResponseQrDeposit struct {
 	CommonResponse
 	Data string `json:"data"`
+}
+
+type ResponseGetUsers struct {
+	CommonResponse
+	Data []bro_domains.User `json:"data"`
+}
+
+type ResponseGetRequestWithdraw struct {
+	CommonResponse
+	Data []bro_domains.WithdrawRequest `json:"data"`
+}
+
+type ResponseCreateWithdrawRequest struct {
+	CommonResponse
+	Data bro_domains.WithdrawRequest `json:"data"`
+}
+
+type ResponseGetCreditsData struct {
+	Conds     []bro_domains.Credit `json:"credits"`
+	Page      uint                 `json:"page"`
+	PerPage   uint                 `json:"per_page"`
+	TotalPage uint                 `json:"total_page"`
+}
+
+type ResponseGetCredits struct {
+	CommonResponse
+	Data ResponseGetCreditsData `json:"data"`
 }

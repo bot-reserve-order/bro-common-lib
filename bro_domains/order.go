@@ -1,11 +1,5 @@
 package bro_domains
 
-import (
-	"database/sql/driver"
-	"encoding/json"
-	"errors"
-)
-
 type BaseInfo struct {
 	// SerialNo        string `json:"serial_no"`
 	SerialId        string `json:"serial_id"`
@@ -19,18 +13,6 @@ type BaseInfo struct {
 	PlanArrivedTime int    `json:"plan_arrived_time"`
 	Price           int    `json:"price"`
 	CreatedAt       uint   `json:"created_at"`
-}
-
-func (a BaseInfo) Value() (driver.Value, error) {
-	return json.Marshal(a)
-}
-
-func (a *BaseInfo) Scan(value interface{}) error {
-	b, ok := value.([]byte)
-	if !ok {
-		return errors.New("type assertion to []byte failed")
-	}
-	return json.Unmarshal(b, &a)
 }
 
 type SiteInfo struct {

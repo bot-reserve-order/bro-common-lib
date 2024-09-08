@@ -191,6 +191,9 @@ func NewBroErrorSubmitInvalidCondition(ctx context.Context) *bro_dto.BroErrorRes
 func NewBroErrorConditionAlreadySubmit(ctx context.Context) *bro_dto.BroErrorResponse {
 	return newError(ctx, 5007, "Condition already submit", nil)
 }
+func NewBroErrorConditionNotMatchOrder(ctx context.Context) *bro_dto.BroErrorResponse {
+	return newError(ctx, 5008, "Condition not match with order", nil)
+}
 
 // 6000
 func NewBroErrorCreateCredit(ctx context.Context) *bro_dto.BroErrorResponse {
