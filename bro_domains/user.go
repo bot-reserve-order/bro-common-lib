@@ -23,6 +23,7 @@ type User struct {
 	FleetToken  string            `json:"fleet_token" gorm:"column:fleet_token"`
 	LineToken   string            `json:"line_token" gorm:"column:line_token"`
 	TrueWallet  string            `json:"true_wallet" gorm:"column:true_wallet"`
+	RunBot      bool              `json:"runbot" gorm:"column:runbot;default:true"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }

@@ -119,3 +119,8 @@ type ResponseGetCredits struct {
 	CommonResponse
 	Data ResponseGetCreditsData `json:"data"`
 }
+
+type ResponseClientConfig struct {
+	Version   string `json:"version"`
+	ClientRun bool   `json:"client_run"`
+}

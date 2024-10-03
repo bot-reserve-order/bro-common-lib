@@ -3,6 +3,7 @@ package bro_dto
 import (
 	"time"
 
+	"github.com/bot-reserve-order/bro-common-lib/bro_domains"
 	"github.com/bot-reserve-order/bro-common-lib/bro_enum"
 	"github.com/gofrs/uuid"
 	"github.com/shopspring/decimal"
@@ -112,4 +113,8 @@ type GetCreditHistory struct {
 	Status  []bro_enum.Status `json:"status" form:"status"`
 	PerPage uint              `json:"per_page" form:"per_page"`
 	PageNum uint              `json:"page_num" form:"page_num"`
+}
+
+type PublishFleetSessionRequest struct {
+	FleetSocketSessions []bro_domains.FleetSocketSession `json:"fleetSocketSessions"`
 }
