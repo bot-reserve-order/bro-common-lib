@@ -118,3 +118,7 @@ type GetCreditHistory struct {
 type PublishFleetSessionRequest struct {
 	FleetSocketSessions []bro_domains.FleetSocketSession `json:"fleetSocketSessions"`
 }
+
+type RequestFleetReLogin struct {
+	UserRootID uuid.UUID `json:"user_root_id"`
+}
