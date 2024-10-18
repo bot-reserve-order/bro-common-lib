@@ -31,33 +31,14 @@ type GetConditionsRequest struct {
 
 // subuser login and founder login
 type Login struct {
-	Username string `json:"username" validate:"required"`
-	Password string `json:"password" validate:"required"`
-}
-
-type RootLoginRegister struct {
-	Login
-	Reference string `json:"reference"`
-	LineToken string `json:"line_token"`
-}
-
-type FounderRegister struct {
-	Login
-	TrueWallet string `json:"true_wallet" validate:"required,number"`
-}
-
-type SubUserRegister struct {
-	Login
-	LineToken string `json:"line_token"`
-}
-
-type UpdateUserPassword struct {
-	OldPassword string `json:"old_password" validate:"required"`
-	NewPassword string `json:"new_password" validate:"required"`
-}
-
-type UpdateUserDisplayName struct {
-	NewDisplayName string `json:"new_display_name" validate:"required"`
+	View                    string `json:"view" form:"view"`
+	Under                   string `json:"under" form:"under"`
+	Ref                     string `json:"ref" form:"ref"`
+	Code                    string `json:"code" form:"code"`
+	State                   string `json:"state" form:"state"`
+	FriendshipStatusChanged bool   `json:"friendship_status_changed" form:"friendship_status_changed"`
+	Error                   string `json:"error" form:"error"`
+	ErrorDescription        string `json:"error_description" form:"error_description"`
 }
 
 type UpdateUserCustomID struct {
@@ -66,10 +47,6 @@ type UpdateUserCustomID struct {
 
 type UpdateUserStatus struct {
 	NewStatus string `json:"new_status" validate:"required"`
-}
-
-type UpdateLineToken struct {
-	NewLineToken string `json:"new_line_token" validate:"required"`
 }
 
 type BoostCondition struct {
@@ -81,26 +58,21 @@ type TrueWalletCallback struct {
 }
 
 type GetUsersRequest struct {
-	ID          []uuid.UUID         `json:"ids"`
-	CustomID    []string            `json:"custom_ids"`
-	DisplayName string              `json:"display_name"`
-	Role        []bro_enum.RoleUser `json:"roles"`
-	Username    []string            `json:"usernames"`
-	Status      []bro_enum.Status   `json:"status"`
-	Parent      []uuid.UUID         `json:"parents"`
-	CompanyID   []uint              `json:"company_ids"`
-	StaffID     []uint              `json:"staff_ids"`
-	Reference   []string            `json:"references"`
-	PackageID   []bro_enum.Package  `json:"package_ids"`
-	FleetToken  []string            `json:"fleet_tokens"`
-	LineToken   []string            `json:"line_tokens"`
-	TrueWallet  []string            `json:"true_wallets"`
-	PerPage     uint                `json:"per_page" form:"per_page"`
-	PageNum     uint                `json:"page_num" form:"page_num"`
-}
-
-type UpdateSubuserPassword struct {
-	NewPassword string `json:"new_password" validate:"required"`
+	ID          []uuid.UUID        `json:"ids"`
+	CustomID    []string           `json:"custom_ids"`
+	DisplayName string             `json:"display_name"`
+	Username    []string           `json:"usernames"`
+	Status      []bro_enum.Status  `json:"status"`
+	Parent      []uuid.UUID        `json:"parents"`
+	CompanyID   []uint             `json:"company_ids"`
+	StaffID     []uint             `json:"staff_ids"`
+	Reference   []string           `json:"references"`
+	PackageID   []bro_enum.Package `json:"package_ids"`
+	FleetToken  []string           `json:"fleet_tokens"`
+	LineToken   []string           `json:"line_tokens"`
+	TrueWallet  []string           `json:"true_wallets"`
+	PerPage     uint               `json:"per_page" form:"per_page"`
+	PageNum     uint               `json:"page_num" form:"page_num"`
 }
 
 type GetRequestWithdraw struct {

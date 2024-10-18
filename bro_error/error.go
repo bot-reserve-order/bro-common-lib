@@ -150,20 +150,8 @@ func NewBroErrorVerifyCookie(ctx context.Context) *bro_dto.BroErrorResponse {
 }
 
 // 4000
-func NewBroErrorCreateRoomNotify(ctx context.Context) *bro_dto.BroErrorResponse {
-	return newError(ctx, 4000, "Verify and check cookie error", nil)
-}
-
-func NewBroErrorGetRoomNotify(ctx context.Context) *bro_dto.BroErrorResponse {
-	return newError(ctx, 4001, "Get room notify error", nil)
-}
-
-func NewBroErrorRoomNotifyNotFound(ctx context.Context) *bro_dto.BroErrorResponse {
-	return newError(ctx, 4002, "Room notify not found", nil)
-}
-
-func NewBroErrorDeleteRoomNotify(ctx context.Context) *bro_dto.BroErrorResponse {
-	return newError(ctx, 4003, "Delete room notify error", nil)
+func NewBroErrorNotFound(ctx context.Context) *bro_dto.BroErrorResponse {
+	return newError(ctx, 4000, "Fleet not found", nil)
 }
 
 // 5000

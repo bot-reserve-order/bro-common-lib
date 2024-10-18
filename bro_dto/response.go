@@ -63,11 +63,6 @@ type ResponseGetConditionsData struct {
 	TotalPage uint                     `json:"total_page"`
 }
 
-type ResponseCreateRoomNotify struct {
-	CommonResponse
-	Data bro_domains.RoomNotify `json:"data"`
-}
-
 type ResponseGetCredit struct {
 	CommonResponse
 	Data decimal.Decimal `json:"data"`
@@ -81,11 +76,6 @@ type ResponseCondition struct {
 type ResponseSumCredit struct {
 	CommonResponse
 	Data decimal.Decimal `json:"data"`
-}
-
-type ResponseRoomNotify struct {
-	CommonResponse
-	Data []bro_domains.RoomNotify `json:"data"`
 }
 
 type ResponseQrDeposit struct {
@@ -123,4 +113,31 @@ type ResponseGetCredits struct {
 type ResponseClientConfig struct {
 	Version   string `json:"version"`
 	ClientRun bool   `json:"client_run"`
+}
+
+type ResponseGetFleetUser struct {
+	CommonResponse
+	Data bro_domains.FleetUser `json:"data"`
+}
+
+type ResponseGetFleetUsers struct {
+	CommonResponse
+	Data []bro_domains.FleetUser `json:"data"`
+}
+
+type ResponseCallbackLogin struct {
+	CommonResponse
+	Data ResponseCallbackLoginData `json:"data"`
+}
+
+type ResponseCallbackLoginData struct {
+	View        string           `json:"view"`
+	User        bro_domains.User `json:"user"`
+	ErrorTitle  string           `json:"error_title"`
+	ErrorDetail string           `json:"error_detail"`
+}
+
+type ResponseGetLineGroup struct {
+	CommonResponse
+	Data []bro_domains.LineGroup `json:"data"`
 }

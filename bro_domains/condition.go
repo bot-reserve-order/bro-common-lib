@@ -16,7 +16,7 @@ type Conditions struct {
 	Area            string                    `json:"area" gorm:"column:area" validate:"required"`
 	CarTypeText     string                    `json:"car_type_text" gorm:"column:car_type_text" validate:"required"`
 	Track           pq.StringArray            `json:"track" gorm:"column:track;type:text[]" validate:"required"`
-	RoomNotifyID    uint                      `json:"room_notify_id" gorm:"column:room_notify_id"`
+	GroupNotify     uuid.UUID                 `json:"group_notify_id" gorm:"column:group_notify_id"`
 	MaxRange        uint                      `json:"max_range" gorm:"column:max_range"`
 	SerialID        string                    `json:"serial_id" gorm:"column:serial_id;index"`
 	OrderDetail     datatypes.JSONType[Order] `json:"order_detail" gorm:"type:jsonb;column:order_detail"`
