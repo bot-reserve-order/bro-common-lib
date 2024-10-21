@@ -150,7 +150,7 @@ func NewBroErrorVerifyCookie(ctx context.Context) *bro_dto.BroErrorResponse {
 }
 
 // 4000
-func NewBroErrorNotFound(ctx context.Context) *bro_dto.BroErrorResponse {
+func NewBroErrorFleetNotFound(ctx context.Context) *bro_dto.BroErrorResponse {
 	return newError(ctx, 4000, "Fleet not found", nil)
 }
 
@@ -181,6 +181,15 @@ func NewBroErrorConditionAlreadySubmit(ctx context.Context) *bro_dto.BroErrorRes
 }
 func NewBroErrorConditionNotMatchOrder(ctx context.Context) *bro_dto.BroErrorResponse {
 	return newError(ctx, 5008, "Condition not match with order", nil)
+}
+func NewBroErrorGroupNotiExpire(ctx context.Context) *bro_dto.BroErrorResponse {
+	return newError(ctx, 5009, "Your noti to group feature is expire, Please choose send noti to yourself", nil)
+}
+func NewBroErrorParentGroupNotiExpire(ctx context.Context) *bro_dto.BroErrorResponse {
+	return newError(ctx, 5010, "Your parent noti to group feature is expire, Please choose other group", nil)
+}
+func NewBroErrorGroupNotiNotfound(ctx context.Context) *bro_dto.BroErrorResponse {
+	return newError(ctx, 5011, "Group notify not found", nil)
 }
 
 // 6000
