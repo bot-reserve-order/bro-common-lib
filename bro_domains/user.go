@@ -9,6 +9,7 @@ import (
 
 type User struct {
 	ID                 uuid.UUID        `gorm:"primaryKey;type:uuid;default:gen_random_uuid()" json:"id"`
+	NumID              uint             `gorm:"column:num_id;autoIncrement" json:"num_id"`
 	Status             bro_enum.Status  `json:"status" gorm:"column:status"`
 	Parent             uuid.UUID        `json:"parent" gorm:"column:parent"`
 	Reference          uuid.UUID        `json:"reference" gorm:"column:reference"`
