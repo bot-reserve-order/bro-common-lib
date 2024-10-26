@@ -10,7 +10,7 @@ import (
 
 type Credit struct {
 	ID          uint            `gorm:"primaryKey" json:"id"`
-	UserID      uuid.UUID       `gorm:"type:uuid;index" json:"user_id" gorm:"column:user_id"`
+	UserID      uuid.UUID       `gorm:"type:uuid;index;column:user_id" json:"user_id"`
 	Amount      decimal.Decimal `json:"amount" gorm:"column:amount"`
 	Note        string          `json:"note" gorm:"column:note"`
 	Status      bro_enum.Status `json:"status" gorm:"column:status"`
