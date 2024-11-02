@@ -111,8 +111,22 @@ type ResponseGetCredits struct {
 }
 
 type ResponseClientConfig struct {
-	Version   string `json:"version"`
-	ClientRun bool   `json:"client_run"`
+	Version     string      `json:"version"`
+	ClientRun   bool        `json:"client_run"`
+	FleetConfig FleetConfig `json:"fleet_config"`
+	BroConfig   BroConfig   `json:"bro_config"`
+}
+
+type FleetConfig struct {
+	BaseApiUrl   string `json:"base_api_url"`
+	WebUiUrl     string `json:"web_ui_url"`
+	WebSocketUrl string `json:"web_socket_url"`
+	SiteKey      string `json:"site_key"`
+}
+
+type BroConfig struct {
+	BaseApiUrl string `json:"base_api_url"`
+	LoginUrl   string `json:"login_url"`
 }
 
 type ResponseGetFleetUser struct {
