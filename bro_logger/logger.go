@@ -5,6 +5,7 @@ import (
 	"net"
 	"os"
 
+	"go.elastic.co/apm/module/apmzap/v2"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -41,7 +42,7 @@ func initLogger(logstashAddr string, logLevel zapcore.Level) {
 	core := zapcore.NewTee(cores...)
 
 	// Initialize logger
-	logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
+	logger = zap.New(core, zap.WrapCore((&apmzap.Core{}).WrapCore), zap.AddCaller(), zap.AddCallerSkip(1))
 }
 
 // Initialize Logstash writer
@@ -53,18 +54,6 @@ func initLogstashWriter(logstashAddr string) zapcore.WriteSyncer {
 	return zapcore.AddSync(conn)
 }
 
-// Extract APM fields from context
-func extractApmToLog(ctx context.Context) []zapcore.Field {
-	fields := []zapcore.Field{
-		zap.Any("env", ctx.Value("env")),
-		zap.Any("service", ctx.Value("service")),
-		zap.Any("trace_id", ctx.Value("trace_id")),
-		zap.Any("span_id", ctx.Value("span_id")),
-	}
-
-	return fields
-}
-
 // Expose logger instance for custom usage
 func Instance() *zap.Logger {
 	return logger
@@ -72,32 +61,32 @@ func Instance() *zap.Logger {
 
 // Log levels with context and APM fields
 func Debug(ctx context.Context, msg string, fields ...zapcore.Field) {
-	fields = append(fields, extractApmToLog(ctx)...)
-	logger.Debug(msg, fields...)
+	traceContextFields := apmzap.TraceContext(ctx)
+	logger.With(traceContextFields...).Debug(msg, fields...)
 }
 func Info(ctx context.Context, msg string, fields ...zapcore.Field) {
-	fields = append(fields, extractApmToLog(ctx)...)
-	logger.Info(msg, fields...)
+	traceContextFields := apmzap.TraceContext(ctx)
+	logger.With(traceContextFields...).Info(msg, fields...)
 }
 func Warn(ctx context.Context, msg string, fields ...zapcore.Field) {
-	fields = append(fields, extractApmToLog(ctx)...)
-	logger.Warn(msg, fields...)
+	traceContextFields := apmzap.TraceContext(ctx)
+	logger.With(traceContextFields...).Warn(msg, fields...)
 }
 func Error(ctx context.Context, msg string, fields ...zapcore.Field) {
-	fields = append(fields, extractApmToLog(ctx)...)
-	logger.Error(msg, fields...)
+	traceContextFields := apmzap.TraceContext(ctx)
+	logger.With(traceContextFields...).Error(msg, fields...)
 }
 func DPanic(ctx context.Context, msg string, fields ...zapcore.Field) {
-	fields = append(fields, extractApmToLog(ctx)...)
-	logger.DPanic(msg, fields...)
+	traceContextFields := apmzap.TraceContext(ctx)
+	logger.With(traceContextFields...).DPanic(msg, fields...)
 }
 func Panic(ctx context.Context, msg string, fields ...zapcore.Field) {
-	fields = append(fields, extractApmToLog(ctx)...)
-	logger.Panic(msg, fields...)
+	traceContextFields := apmzap.TraceContext(ctx)
+	logger.With(traceContextFields...).Panic(msg, fields...)
 }
 func Fatal(ctx context.Context, msg string, fields ...zapcore.Field) {
-	fields = append(fields, extractApmToLog(ctx)...)
-	logger.Fatal(msg, fields...)
+	traceContextFields := apmzap.TraceContext(ctx)
+	logger.With(traceContextFields...).Fatal(msg, fields...)
 }
 
 // Initialize the logger with custom configuration
