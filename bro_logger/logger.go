@@ -2,8 +2,11 @@ package bro_logger
 
 import (
 	"context"
+	"errors"
 	"net"
 	"os"
+	"sync"
+	"time"
 
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.uber.org/zap"
@@ -11,7 +14,74 @@ import (
 )
 
 var logger *zap.Logger
-var logstashWriter zapcore.WriteSyncer
+var logstashWriter *reconnectingWriter
+
+// reconnectingWriter wraps a net.Conn and handles reconnection logic
+type reconnectingWriter struct {
+	mu        sync.Mutex
+	address   string
+	conn      net.Conn
+	reconnect chan struct{}
+}
+
+func newReconnectingWriter(address string) *reconnectingWriter {
+	rw := &reconnectingWriter{
+		address:   address,
+		reconnect: make(chan struct{}, 1),
+	}
+	go rw.manageConnection()
+	return rw
+}
+
+func (rw *reconnectingWriter) manageConnection() {
+	for {
+		if rw.conn == nil {
+			conn, err := net.Dial("tcp", rw.address)
+			if err == nil {
+				rw.mu.Lock()
+				rw.conn = conn
+				rw.mu.Unlock()
+			} else {
+				time.Sleep(5 * time.Second) // Retry after 5 seconds
+			}
+		}
+		<-rw.reconnect
+		rw.closeConnection()
+	}
+}
+
+func (rw *reconnectingWriter) closeConnection() {
+	rw.mu.Lock()
+	defer rw.mu.Unlock()
+	if rw.conn != nil {
+		rw.conn.Close()
+		rw.conn = nil
+	}
+}
+
+func (rw *reconnectingWriter) Write(p []byte) (n int, err error) {
+	rw.mu.Lock()
+	defer rw.mu.Unlock()
+	if rw.conn == nil {
+		return 0, errors.New("connection to Logstash is not available")
+	}
+	n, err = rw.conn.Write(p)
+	if err != nil {
+		rw.triggerReconnect()
+	}
+	return n, err
+}
+
+func (rw *reconnectingWriter) Sync() error {
+	return nil // No-op for reconnectingWriter
+}
+
+func (rw *reconnectingWriter) triggerReconnect() {
+	select {
+	case rw.reconnect <- struct{}{}:
+	default: // Avoid blocking if a reconnect signal is already pending
+	}
+}
 
 func init() {
 	initLogger("", zapcore.InfoLevel) // Default initialization
@@ -28,13 +98,13 @@ func initLogger(logstashAddr string, logLevel zapcore.Level) {
 	encoder := zapcore.NewJSONEncoder(encoderConfig)
 
 	// Add console core for fallback logging
-	consoleCore := zapcore.NewCore(encoder, zapcore.Lock(zapcore.AddSync(zapcore.AddSync(newFallbackWriter()))), logLevel)
+	consoleCore := zapcore.NewCore(encoder, zapcore.Lock(zapcore.AddSync(os.Stdout)), logLevel)
 	cores = append(cores, consoleCore)
 
 	// Add Logstash core if address is provided
 	if logstashAddr != "" {
-		logstashWriter = initLogstashWriter(logstashAddr)
-		logstashCore := zapcore.NewCore(encoder, logstashWriter, logLevel)
+		logstashWriter = newReconnectingWriter(logstashAddr)
+		logstashCore := zapcore.NewCore(encoder, zapcore.AddSync(logstashWriter), logLevel)
 		cores = append(cores, logstashCore)
 	}
 
@@ -43,15 +113,6 @@ func initLogger(logstashAddr string, logLevel zapcore.Level) {
 
 	// Initialize logger
 	logger = zap.New(core, zap.WrapCore((&apmzap.Core{}).WrapCore), zap.AddCaller(), zap.AddCallerSkip(1))
-}
-
-// Initialize Logstash writer
-func initLogstashWriter(logstashAddr string) zapcore.WriteSyncer {
-	conn, err := net.Dial("tcp", logstashAddr) // Use "udp" for UDP transport
-	if err != nil {
-		panic("Failed to connect to Logstash: " + err.Error())
-	}
-	return zapcore.AddSync(conn)
 }
 
 // Expose logger instance for custom usage
@@ -89,12 +150,7 @@ func Fatal(ctx context.Context, msg string, fields ...zapcore.Field) {
 	logger.With(traceContextFields...).Fatal(msg, fields...)
 }
 
-// Initialize the logger with custom configuration
+// Configure the logger with custom configuration
 func Configure(logstashAddr string, logLevel zapcore.Level) {
 	initLogger(logstashAddr, logLevel)
-}
-
-// Helper: Fallback writer to log to the console if Logstash is unavailable
-func newFallbackWriter() zapcore.WriteSyncer {
-	return zapcore.AddSync(zapcore.Lock(zapcore.AddSync(os.Stdout)))
 }
