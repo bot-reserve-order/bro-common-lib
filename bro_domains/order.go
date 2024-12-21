@@ -193,3 +193,8 @@ type OrderRearangeReq struct {
 	LineType *string `json:"line_type"`
 	Province string  `json:"province"`
 }
+
+type OrderBaseInfoIndice struct {
+	OwnerFleetId string `json:"ownerFleetId" gorm:"column:ownerFleetId"`
+	BaseInfo
+}
