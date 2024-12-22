@@ -155,3 +155,13 @@ type ResponseGetLineGroup struct {
 	CommonResponse
 	Data []bro_domains.LineGroup `json:"data"`
 }
+
+type ResponseFailedLogs struct {
+	CommonResponse
+	Data []bro_domains.FailedSubmitLogsIndice `json:"data"`
+}
+
+type ResponseLogOrderOutFromFleetSystem struct {
+	CommonResponse
+	Data []bro_domains.OrderBaseInfoIndice `json:"data"`
+}
