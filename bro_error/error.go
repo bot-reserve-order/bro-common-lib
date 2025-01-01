@@ -121,7 +121,7 @@ func NewBroErrorGetStaffInfoError(ctx context.Context) *bro_dto.BroErrorResponse
 }
 
 func NewBroErrorGetOrderHistoryError(ctx context.Context) *bro_dto.BroErrorResponse {
-	return newError(ctx, 2004, "Get order history error", nil)
+	return newError(ctx, 2005, "Get order history error", nil)
 }
 
 // 3000
