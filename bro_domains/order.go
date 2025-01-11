@@ -195,6 +195,6 @@ type OrderRearangeReq struct {
 }
 
 type OrderBaseInfoIndice struct {
-	OwnerFleetId string `json:"ownerFleetId" gorm:"primaryKey;column:ownerFleetId"`
+	OwnerFleetId string `json:"ownerFleetId" gorm:"column:ownerFleetId"`
 	BaseInfo
 }
